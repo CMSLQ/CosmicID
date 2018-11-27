@@ -138,13 +138,13 @@ CosmicID::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
     ++muonIdx;
   }
 
-  std::auto_ptr<edm::ValueMap<float> > out(new edm::ValueMap<float>());
+  std::unique_ptr<edm::ValueMap<float> > out(new edm::ValueMap<float>());
   edm::ValueMap<float>::Filler filler(*out);
   filler.insert(muons, values.begin(), values.end());
   filler.fill();
 
   // put value map into event
-  iEvent.put(out);
+  iEvent.put(std::move(out));
 
   /* This is an event example
   //Read 'ExampleData' from the Event
@@ -153,7 +153,7 @@ CosmicID::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
   //Use the ExampleData to create an ExampleData2 which 
   // is put into the Event
-  std::auto_ptr<ExampleData2> pOut(new ExampleData2(*pIn));
+  std::unique_ptr<ExampleData2> pOut(new ExampleData2(*pIn));
   iEvent.put(pOut);
   */
 
